@@ -1,0 +1,25 @@
+# 최초 작성: 2026-09-27 (디렉토리 구조 승인과 함께)
+# 스택 관련 항목(빌드 산출물, 의존성 폴더)은 D1 확정 후 추가한다.
+
+# 임시 산출물
+/workspace/*
+!/workspace/README.md
+
+# 실제 시험 패키지: 정답·루브릭 유출 방지. 샘플 시험만 커밋한다
+# 앞의 /는 저장소 루트의 exams만 뜻한다. 없으면 server/src/modules/exams 소스까지 무시된다(2026-09-27 배포 중 발견)
+/exams/*
+!/exams/README.md
+!/exams/sample-*/
+
+# 시크릿
+.env
+.env.*
+!.env.example
+
+# 의존성·빌드 산출물(D1 확정 후 추가, 2026-09-27)
+node_modules/
+web/dist/
+
+# Firebase Hosting 배포용 웹 빌드 복사본(infra/deploy/deploy-hosting.sh가 만든다)
+/infra/deploy/.hosting/
+/infra/deploy/.firebase/

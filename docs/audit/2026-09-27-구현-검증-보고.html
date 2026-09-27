@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>구현 검증 보고</title>
+<style>
+  :root {
+    --ink: #17212b;
+    --ink-muted: #5b6875;
+    --paper: #ffffff;
+    --paper-sunken: #f3f5f7;
+    --rule: #dde2e7;
+    --console: #1f2f3d;
+    --console-ink: #e8eef4;
+    --console-muted: #9fb0c0;
+    --ok: #0f7c74;
+    --caution: #b7791f;
+    --caution-ink: #8a5a12;
+    --caution-surface: #fdf6e7;
+    --danger: #c0392b;
+    --readout-ok: #7fd6c9;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'Pretendard Variable', 'Pretendard', 'Malgun Gothic', system-ui, sans-serif;
+    font-size: 15px;
+    line-height: 1.6;
+  }
+  .num { font-variant-numeric: tabular-nums; }
+  header.verdict {
+    background: var(--console);
+    color: var(--console-ink);
+    padding: 32px 16px 28px;
+  }
+  .wrap { max-width: 980px; margin: 0 auto; padding: 0 16px; }
+  header.verdict .wrap { padding: 0; }
+  .verdict h1 { margin: 0 0 4px; font-size: 26px; }
+  .verdict p { margin: 0; color: var(--console-muted); }
+  .readouts { display: flex; flex-wrap: wrap; gap: 32px; margin-top: 24px; }
+  .readout span { display: block; font-size: 12px; color: var(--console-muted); }
+  .readout strong { display: block; font-size: 30px; line-height: 1.1; color: var(--readout-ok); }
+  .readout.caution strong { color: #f6c768; }
+  main { padding: 8px 16px 64px; }
+  section { padding-top: 28px; border-top: 1px solid var(--rule); margin-top: 28px; }
+  section:first-child { border-top: 0; margin-top: 0; }
+  h2 { font-size: 19px; margin: 0 0 12px; }
+  p { margin: 0 0 10px; }
+  ul, ol { margin: 0 0 10px; padding-left: 22px; }
+  .table-scroll { overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; font-size: 14px; margin: 8px 0 12px; }
+  th { text-align: left; background: var(--paper-sunken); border-bottom: 1px solid #c3cbd3; padding: 8px 10px; white-space: nowrap; }
+  td { border-bottom: 1px solid var(--rule); padding: 8px 10px; vertical-align: top; }
+  td.r, th.r { text-align: right; }
+  .tag { font-size: 12px; font-weight: 700; white-space: nowrap; }
+  .tag.critical { color: var(--danger); }
+  .tag.high { color: var(--caution-ink); }
+  .tag.mid, .tag.low { color: var(--ink-muted); }
+  .note { border-left: 3px solid var(--caution); background: var(--caution-surface); padding: 10px 14px; font-size: 14px; }
+  .muted { color: var(--ink-muted); }
+  code { font-size: 13px; background: var(--paper-sunken); padding: 1px 4px; }
+  @media (max-width: 600px) {
+    .readout strong { font-size: 24px; }
+    .readouts { gap: 20px; }
+  }
+</style>
+</head>
+<body>
+<header class="verdict">
+  <div class="wrap">
+    <h1>구현 검증 보고</h1>
+    <p>2026-09-27 갱신. 권한 구조 분리, 수험생 서버 다중 인스턴스, 브라우저별 E2E, 120분 리허설까지 반영. 실제 Claude API 호출은 키 발급 후 확인한다.</p>
+    <div class="readouts">
+      <div class="readout"><span>자동 테스트</span><strong class="num">458 통과</strong></div>
+      <div class="readout"><span>분기 커버리지</span><strong class="num">84.4%</strong></div>
+      <div class="readout"><span>120명 120분 리허설 오류</span><strong class="num">0건</strong></div>
+      <div class="readout caution"><span>실제 API 검증</span><strong>대기</strong></div>
+    </div>
+  </div>
+</header>
+<main class="wrap">
+  <section>
+    <h2>요약</h2>
+    <ul>
+      <li>PRD 12장 MVP 12개 항목을 모두 구현했다. 응시용 AI와 채점 LLM은 모의 구현으로 검증했다.</li>
+      <li>수험생 서버, 관리자 서버, 채점 워커를 프로세스·웹 빌드·DB 계정 세 겹으로 나눴다. 권한 경계는 테스트 9개로 확인한다.</li>
+      <li>수험생 서버를 여러 대 띄울 수 있다. 두 대를 라운드로빈 뒤에 두고 120명 부하에서 오류 0건.</li>
+      <li>테스트 작성·리뷰·E2E 점검에서 찾은 결함 15건을 모두 고쳤다.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>자동 검증</h2>
+    <div class="table-scroll"><table>
+      <thead><tr><th>항목</th><th>결과</th><th>명령</th></tr></thead>
+      <tbody>
+        <tr><td>타입 검사(전 패키지와 스크립트·테스트)</td><td>통과</td><td><code>npm run typecheck</code></td></tr>
+        <tr><td>단위 테스트</td><td class="num">390개 통과</td><td><code>npm test</code></td></tr>
+        <tr><td>통합 테스트(실제 PostgreSQL 18, 역할별 계정)</td><td class="num">53개 통과</td><td><code>npm run test:integration</code></td></tr>
+        <tr><td>E2E: 전체 흐름 + Chromium·Firefox·WebKit·Edge 핵심 동작·접근성·반응형</td><td class="num">15개 통과</td><td><code>npm run test:e2e</code></td></tr>
+        <tr><td>연속 실행 안정성</td><td>5회 연속 통과</td><td><code>npm run test:coverage</code></td></tr>
+      </tbody>
+    </table></div>
+    <div class="table-scroll"><table>
+      <thead><tr><th>커버리지(단위 + 통합)</th><th class="r">이전</th><th class="r">지금</th></tr></thead>
+      <tbody>
+        <tr><td>라인</td><td class="r num">88.0%</td><td class="r num">94.0%</td></tr>
+        <tr><td>구문</td><td class="r num">83.6%</td><td class="r num">91.0%</td></tr>
+        <tr><td>함수</td><td class="r num">89.7%</td><td class="r num">93.9%</td></tr>
+        <tr><td>분기</td><td class="r num">69.2%</td><td class="r num">84.4%</td></tr>
+      </tbody>
+    </table></div>
+  </section>
+
+  <section>
+    <h2>120분 자동 리허설</h2>
+    <p>가상 응시자 120명이 동시에 시작해 118분 동안 20~60초마다 행동하고 제출했다. 끝난 뒤 즉시 채점까지 돌렸다.</p>
+    <div class="table-scroll"><table>
+      <thead><tr><th>요청</th><th class="r">건수</th><th class="r">오류</th><th class="r">p50</th><th class="r">p95</th><th class="r">p99</th></tr></thead>
+      <tbody>
+        <tr><td>로그인(동시 120명)</td><td class="r num">120</td><td class="r num">0</td><td class="r num">2,394ms</td><td class="r num">2,931ms</td><td class="r num">2,954ms</td></tr>
+        <tr><td>응시 시작</td><td class="r num">120</td><td class="r num">0</td><td class="r num">2,853ms</td><td class="r num">3,449ms</td><td class="r num">3,586ms</td></tr>
+        <tr><td>AI 전송</td><td class="r num">7,476</td><td class="r num">0</td><td class="r num">24ms</td><td class="r num">128ms</td><td class="r num">384ms</td></tr>
+        <tr><td>답안 저장</td><td class="r num">8,464</td><td class="r num">0</td><td class="r num">11ms</td><td class="r num">38ms</td><td class="r num">165ms</td></tr>
+        <tr><td>상태 조회</td><td class="r num">5,229</td><td class="r num">0</td><td class="r num">10ms</td><td class="r num">47ms</td><td class="r num">144ms</td></tr>
+        <tr><td>제출</td><td class="r num">120</td><td class="r num">0</td><td class="r num">22ms</td><td class="r num">59ms</td><td class="r num">156ms</td></tr>
+      </tbody>
+    </table></div>
+    <p>끝난 뒤 120명 채점은 12.5초에 끝났다(모의 채점기). 시작 순간 로그인 2~3초는 120명이 같은 순간에 들어오는 최악의 경우다. 자세한 내용은 <code>2026-09-27-부하-테스트-다중-인스턴스.md</code>.</p>
+  </section>
+
+  <section>
+    <h2>이번에 찾아 고친 결함</h2>
+    <div class="table-scroll"><table>
+      <thead><tr><th>등급</th><th>결함</th><th>조치</th></tr></thead>
+      <tbody>
+        <tr><td><span class="tag high">높음</span></td><td>예약을 빼앗긴 옛 담당 서버의 알림이 새 담당 서버 구독자를 끊을 수 있다</td><td>알림에 서버 식별자, 잃은 예약에서 손 떼기</td></tr>
+        <tr><td><span class="tag mid">중간</span></td><td>관리자 서버·채점 워커가 응시자 PIN 해시를 읽을 수 있었다</td><td>컬럼 단위 권한</td></tr>
+        <tr><td><span class="tag mid">중간</span></td><td>수험생 서버가 관리자가 연 시험을 재시작 전까지 모른다</td><td>시험 상태는 매번 DB에서 읽음</td></tr>
+        <tr><td><span class="tag mid">중간</span></td><td>한 IP 로그인 폭주 때 한도 기록 잠금 대기</td><td>IP 한도는 서버별, 한도 확인은 DB 함수</td></tr>
+        <tr><td><span class="tag mid">중간</span></td><td>주의 색 글자 명암비 부족, 320px 계기판 넘침, 768px 관리자 표 넘침</td><td>글자용 색 토큰, 좁은 화면 배치 수정</td></tr>
+        <tr><td><span class="tag mid">중간</span></td><td>공지 순환으로 영원히 안 열리는 하위문항을 검증이 못 잡음</td><td>도달 불가 검사 추가</td></tr>
+        <tr><td><span class="tag low">낮음</span></td><td>CSV 빈 칸 폴백, 깨진 주소 500, 진입 HTML 장기 캐시, 기본 속성 이름 통과, 로그인 실패 집계 경합, 끝내는 중 스냅숏</td><td>각각 오류로 드러내거나 원자화</td></tr>
+        <tr><td><span class="tag low">낮음</span></td><td>테스트 파일 하나가 드물게 통째로 실패</td><td>Windows 프로세스 생성 실패. 워커 스레드로 실행</td></tr>
+      </tbody>
+    </table></div>
+  </section>
+
+  <section>
+    <h2>검증하지 못한 것</h2>
+    <ol>
+      <li>실제 Claude API 호출 전부(스트리밍, 토큰 계산, 캐시 적중, 채점, 배치, 레이트 리밋).</li>
+      <li>LLM 채점 품질(골든 세트 편차).</li>
+      <li>부하 중 약 1분마다 몇 초 멈춤. DB 자동 정리 시각과 겹치며 원인 미확정. 별도 DB 서버에서 다시 잰다.</li>
+      <li>여러 PC에 나눈 수험생 서버의 처리량 이득.</li>
+      <li>사람이 참여하는 모의고사 리허설(절차서 <code>docs/runbook/모의고사-리허설-절차.md</code>).</li>
+    </ol>
+    <p class="note">결정이 필요한 것: 샘플 루브릭의 '공지 이후 수정' 기준(현재 false), 샘플 시험의 중대 위반 처리(현재 review), API 키와 조직 티어(미발급).</p>
+  </section>
+</main>
+</body>
+</html>

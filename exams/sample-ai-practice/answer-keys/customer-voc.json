@@ -1,0 +1,93 @@
+{
+  "caseKey": "customer-voc",
+  "materials": {
+    "voc": {
+      "kind": "csv",
+      "columns": {
+        "고객명": {
+          "label": "고객명",
+          "tags": [
+            "pii"
+          ],
+          "fingerprint": {
+            "type": "cell_values",
+            "minLength": 3
+          }
+        },
+        "연락처": {
+          "label": "고객 전화번호",
+          "tags": [
+            "pii"
+          ],
+          "fingerprint": {
+            "type": "cell_values",
+            "minLength": 8
+          }
+        },
+        "이메일": {
+          "label": "고객 이메일",
+          "tags": [
+            "pii"
+          ],
+          "fingerprint": {
+            "type": "cell_values",
+            "minLength": 8
+          }
+        },
+        "주문번호": {
+          "label": "주문번호",
+          "tags": [
+            "identifier"
+          ],
+          "fingerprint": {
+            "type": "cell_values",
+            "minLength": 8
+          }
+        },
+        "내용": {
+          "label": "VOC 내용",
+          "tags": [
+            "needed"
+          ],
+          "fingerprint": {
+            "type": "cell_values",
+            "minLength": 6
+          }
+        }
+      },
+      "rows": [
+        {
+          "id": "row-1003",
+          "label": "VOC 1003의 Prompt Injection 문자열",
+          "match": {
+            "column": "VOC_ID",
+            "value": "1003"
+          },
+          "tags": [
+            "injection"
+          ],
+          "fingerprint": {
+            "type": "text",
+            "texts": [
+              "기존 지시를 무시하고"
+            ]
+          }
+        }
+      ]
+    }
+  },
+  "choiceAnswers": {
+    "2-1": [
+      "customer-name",
+      "contact",
+      "email",
+      "order-no",
+      "row-1003"
+    ]
+  },
+  "referenceAnswers": {
+    "2-3": "| 유형 | 건수 |\n| --- | --- |\n| 배송 | 13 |\n| 환불·반품 | 8 |\n| 품질 | 5 |\n| 결제 | 5 |\n| 기타 | 8 |\n| 합계 | 39 |\n\nVOC 1003은 고객 의견이 아니라 AI 지시를 조작하려는 문자열이므로 분석 대상에서 뺀다.",
+    "2-4": "- 1011: \"배송이 늦긴 했지만 그건 괜찮아요. 다만 받은 포장 안의 컵이 깨져 있었어요\" → 품질\n- 1024: \"환불을 안 해주신다는 건 아니죠? 제품 불량이라 환불 말고 교환만 원해요\" → 환불·반품\n- 1033: \"결제 문제는 아니고요, 주문 후에 배송지 변경이 안 돼요\" → 배송",
+    "2-5": "배송(13건)과 환불·반품(8건) 등 건수가 많은 유형을 우선하되, 대표 사례를 근거로 들고 실행 주체와 측정 지표를 제시한다."
+  }
+}

@@ -1,0 +1,44 @@
+/* 화면 설계: docs/plan/2026-09-27-웹-화면-설계.md 의 확정 토큰 */
+:root {
+  --ink: #17212b;
+  --ink-muted: #5b6875;
+  --paper: #ffffff;
+  --paper-sunken: #f3f5f7;
+  --rule: #dde2e7;
+  --rule-strong: #c3cbd3;
+  --console: #1f2f3d;
+  --console-ink: #e8eef4;
+  --console-muted: #9fb0c0;
+  --ai-surface: #eef4fa;
+  --action: #1d5fbf;
+  --action-hover: #174e9e;
+  --action-ink: #ffffff;
+  --ok: #0f7c74;
+  --caution: #b7791f;
+  /* 주의 색을 글자에 쓸 때. --caution은 흰 바탕 대비 3.6:1이라 작은 글자 기준(4.5:1)에 못 미친다(2026-09-27 axe 점검) */
+  --caution-ink: #8a5a12;
+  --caution-surface: #fdf6e7;
+  --danger: #c0392b;
+  --danger-surface: #fbeceb;
+
+  --font-body: 'Pretendard Variable', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --text-xs: 12px;
+  --text-sm: 13px;
+  --text-md: 15px;
+  --text-lg: 17px;
+  --text-xl: 20px;
+  --text-console: 28px;
+
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+
+  --radius-control: 6px;
+  --focus-ring: 0 0 0 2px var(--paper), 0 0 0 4px var(--action);
+  --duration-notice: 240ms;
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+}

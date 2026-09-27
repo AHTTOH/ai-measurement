@@ -1,0 +1,156 @@
+{
+  "caseKey": "hr-survey",
+  "axes": {
+    "judgment": {
+      "max": 30,
+      "rules": [
+        {
+          "id": "j-choice",
+          "type": "choice_answer",
+          "description": "1-1 부적절 컬럼 식별",
+          "subquestion": "1-1",
+          "scoring": "per_option",
+          "points": 8
+        },
+        {
+          "id": "j-needed",
+          "type": "columns_sent",
+          "description": "분석에 필요한 컬럼(부서·직무만족도·이직의향)을 AI에 제공",
+          "material": "employees",
+          "columns": [
+            "부서",
+            "직무만족도",
+            "이직의향"
+          ],
+          "minDistinctValues": 2,
+          "points": 6
+        },
+        {
+          "id": "j-no-rrn",
+          "type": "columns_withheld",
+          "description": "주민등록번호를 AI에 전달하지 않음",
+          "material": "employees",
+          "columns": [
+            "주민등록번호"
+          ],
+          "points": 5
+        },
+        {
+          "id": "j-no-contact",
+          "type": "columns_withheld",
+          "description": "성명·휴대전화를 AI에 전달하지 않음",
+          "material": "employees",
+          "columns": [
+            "성명",
+            "휴대전화"
+          ],
+          "points": 4
+        },
+        {
+          "id": "j-no-injection",
+          "type": "rows_withheld",
+          "description": "Prompt Injection 문구가 든 행을 AI에 전달하지 않음",
+          "material": "employees",
+          "rows": [
+            "row-injection"
+          ],
+          "points": 4
+        },
+        {
+          "id": "j-patterns",
+          "type": "patterns_absent",
+          "description": "대화 본문에 주민등록번호·휴대전화 형식이 없음",
+          "patterns": [
+            "rrn",
+            "mobile"
+          ],
+          "points": 3
+        }
+      ],
+      "criteria": []
+    },
+    "usage": {
+      "max": 35,
+      "rules": [
+        {
+          "id": "u-revise",
+          "type": "answer_revised_after_notice",
+          "description": "공지 이후 1-3 결과를 다른 내용으로 다시 제출",
+          "notice": "privacy-small-org",
+          "subquestion": "1-3",
+          "firstAnswerAfterNoticeCounts": false,
+          "points": 5
+        }
+      ],
+      "criteria": [
+        {
+          "id": "u-context",
+          "description": "분석 목적, 지표 정의(평균, 비율의 분모), 결과 형식을 AI에 분명히 전달했다",
+          "points": 8
+        },
+        {
+          "id": "u-iterate",
+          "description": "AI 결과가 요구와 다를 때 구체적으로 지적해 수정하게 했다",
+          "points": 7
+        },
+        {
+          "id": "u-verify",
+          "description": "AI가 낸 수치를 원자료로 직접 확인하거나 재계산하는 등 검증했다(1-4 답안 포함)",
+          "points": 8
+        },
+        {
+          "id": "u-overreach",
+          "description": "AI의 과도한 해석(인과 단정, 작은 조직 결과의 일반화 등)을 발견해 걸러냈다",
+          "points": 7
+        }
+      ]
+    },
+    "output": {
+      "max": 35,
+      "rules": [
+        {
+          "id": "o-sales1-sat",
+          "type": "numeric_value",
+          "description": "영업1팀 평균 직무만족도 수치",
+          "subquestion": "1-3",
+          "label": "영업1팀 평균 직무만족도",
+          "expected": 3.0833,
+          "tolerance": 0.05,
+          "points": 5
+        },
+        {
+          "id": "o-overall-turnover",
+          "type": "numeric_value",
+          "description": "전체 이직의향 비율 수치",
+          "subquestion": "1-3",
+          "label": "전체 직원 이직의향 비율(%)",
+          "expected": 29.1667,
+          "tolerance": 0.5,
+          "points": 5
+        }
+      ],
+      "criteria": [
+        {
+          "id": "o-requirements",
+          "description": "1-3 표에 부서별 인원·평균 직무만족도·이직의향 비율이 모두 있고, 5명 미만 조직은 개별 표시하지 않았다",
+          "points": 8
+        },
+        {
+          "id": "o-logic",
+          "description": "1-5 보고서의 결론이 제시한 수치 근거와 논리적으로 이어진다",
+          "points": 7
+        },
+        {
+          "id": "o-usable",
+          "description": "1-5 보고서가 경영진이 바로 읽고 판단할 수 있는 구성과 완성도를 갖췄다",
+          "points": 5
+        },
+        {
+          "id": "o-consistency",
+          "description": "보고서 안 수치와 서술이 1-3 결과 및 원자료와 모순되지 않는다",
+          "points": 5
+        }
+      ]
+    }
+  }
+}

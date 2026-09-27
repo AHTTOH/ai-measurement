@@ -1,0 +1,144 @@
+{
+  "caseKey": "customer-voc",
+  "axes": {
+    "judgment": {
+      "max": 30,
+      "rules": [
+        {
+          "id": "j2-choice",
+          "type": "choice_answer",
+          "description": "2-1 부적절 항목 식별",
+          "subquestion": "2-1",
+          "scoring": "per_option",
+          "points": 8
+        },
+        {
+          "id": "j2-needed",
+          "type": "columns_sent",
+          "description": "분류에 필요한 VOC 내용을 AI에 제공",
+          "material": "voc",
+          "columns": [
+            "내용"
+          ],
+          "minDistinctValues": 5,
+          "points": 6
+        },
+        {
+          "id": "j2-no-contact",
+          "type": "columns_withheld",
+          "description": "고객 연락처·이메일을 AI에 전달하지 않음",
+          "material": "voc",
+          "columns": [
+            "연락처",
+            "이메일"
+          ],
+          "points": 6
+        },
+        {
+          "id": "j2-no-name",
+          "type": "columns_withheld",
+          "description": "고객명을 AI에 전달하지 않음",
+          "material": "voc",
+          "columns": [
+            "고객명"
+          ],
+          "points": 3
+        },
+        {
+          "id": "j2-no-injection",
+          "type": "rows_withheld",
+          "description": "VOC 1003(인젝션 문자열)을 AI에 전달하지 않음",
+          "material": "voc",
+          "rows": [
+            "row-1003"
+          ],
+          "points": 4
+        },
+        {
+          "id": "j2-patterns",
+          "type": "patterns_absent",
+          "description": "대화 본문에 전화번호·이메일 형식이 없음",
+          "patterns": [
+            "mobile",
+            "email"
+          ],
+          "points": 3
+        }
+      ],
+      "criteria": []
+    },
+    "usage": {
+      "max": 35,
+      "rules": [],
+      "criteria": [
+        {
+          "id": "u2-context",
+          "description": "분류 기준(유형 정의, 경계 사례 처리)을 AI에 명확히 전달했다",
+          "points": 9
+        },
+        {
+          "id": "u2-iterate",
+          "description": "분류가 틀리거나 기준과 다를 때 구체적으로 수정을 요청했다",
+          "points": 8
+        },
+        {
+          "id": "u2-verify",
+          "description": "AI 분류 결과를 원문과 대조해 표본 검증하거나 건수를 다시 집계했다",
+          "points": 10
+        },
+        {
+          "id": "u2-injection",
+          "description": "자료 속 이상 문자열(Prompt Injection)이나 AI의 이상 반응을 알아차리고 대응했다",
+          "points": 8
+        }
+      ]
+    },
+    "output": {
+      "max": 35,
+      "rules": [
+        {
+          "id": "o2-delivery",
+          "type": "numeric_value",
+          "description": "배송 유형 건수",
+          "subquestion": "2-3",
+          "label": "배송 유형 VOC 건수",
+          "expected": 13,
+          "tolerance": 1,
+          "points": 5
+        },
+        {
+          "id": "o2-refund",
+          "type": "numeric_value",
+          "description": "환불·반품 유형 건수",
+          "subquestion": "2-3",
+          "label": "환불·반품 유형 VOC 건수",
+          "expected": 8,
+          "tolerance": 1,
+          "points": 5
+        }
+      ],
+      "criteria": [
+        {
+          "id": "o2-table",
+          "description": "2-3 표가 다섯 유형의 건수를 빠짐없이 제시하고 합계가 분석 대상 건수와 맞는다",
+          "points": 7
+        },
+        {
+          "id": "o2-corrections",
+          "description": "2-4에서 실제 오분류 사례를 근거와 함께 바로잡았다",
+          "points": 6
+        },
+        {
+          "id": "o2-proposals",
+          "description": "2-5 개선 과제가 유형별 건수와 대표 사례에 근거하고 우선순위 이유가 분명하다",
+          "points": 7
+        },
+        {
+          "id": "o2-usable",
+          "description": "2-5 제안이 실제로 실행할 수 있을 만큼 구체적이다",
+          "points": 5
+        }
+      ]
+    }
+  }
+}

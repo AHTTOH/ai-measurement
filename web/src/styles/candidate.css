@@ -1,0 +1,634 @@
+/* 응시자 화면. 설계: docs/plan/2026-09-27-웹-화면-설계.md */
+
+/* ---------- 입장·종료 화면 ---------- */
+.entry {
+  min-height: 100%;
+  display: grid;
+  place-items: center;
+  padding: var(--space-6) var(--space-4);
+  background: var(--paper-sunken);
+}
+.entry-card {
+  width: min(420px, 100%);
+  display: grid;
+  gap: var(--space-4);
+  padding: var(--space-8);
+  background: var(--paper);
+  border-top: 4px solid var(--console);
+}
+.entry-wide {
+  width: min(640px, 100%);
+}
+.entry-title {
+  font-size: var(--text-xl);
+}
+.entry-submit {
+  justify-content: center;
+}
+.entry-actions {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+.facts {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  margin: 0;
+  border-top: 1px solid var(--rule);
+  border-bottom: 1px solid var(--rule);
+}
+.facts div {
+  padding: var(--space-3) 0;
+}
+.facts dt {
+  font-size: var(--text-sm);
+  color: var(--ink-muted);
+}
+.facts dd {
+  margin: 0;
+  font-size: var(--text-lg);
+  font-weight: 700;
+}
+.pledge {
+  display: flex;
+  gap: var(--space-2);
+  align-items: flex-start;
+  font-weight: 600;
+}
+
+/* ---------- 작업대 ---------- */
+/* 공지·오류 띠는 있을 때만 그려지므로 그리드 행 대신 세로 flex로 남은 높이를 본문에 준다 */
+.workspace {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+/* 계기판: 화면에서 유일하게 대담한 영역 */
+.console {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: var(--space-6);
+  padding: var(--space-3) var(--space-5);
+  background: var(--console);
+  color: var(--console-ink);
+}
+.console-identity {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-3);
+  min-width: 0;
+}
+.console-title {
+  font-weight: 700;
+}
+.console-candidate {
+  color: var(--console-muted);
+  font-size: var(--text-sm);
+}
+.console-badge {
+  padding: 2px var(--space-2);
+  border: 1px solid var(--caution);
+  color: #f6c768;
+  font-size: var(--text-xs);
+  font-weight: 700;
+}
+.console-cases {
+  display: flex;
+  gap: var(--space-1);
+  overflow-x: auto;
+}
+.console-case {
+  padding: var(--space-2) var(--space-3);
+  border: 0;
+  border-bottom: 2px solid transparent;
+  background: transparent;
+  color: var(--console-muted);
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.console-case:hover {
+  color: var(--console-ink);
+}
+.console-case[aria-current='page'] {
+  color: var(--console-ink);
+  border-bottom-color: var(--console-ink);
+}
+.console-readouts {
+  display: flex;
+  align-items: center;
+  gap: var(--space-6);
+}
+.readout {
+  display: grid;
+  grid-template-columns: auto auto;
+  column-gap: var(--space-2);
+  align-items: baseline;
+}
+.readout-label {
+  grid-column: 1 / -1;
+  font-size: var(--text-xs);
+  color: var(--console-muted);
+}
+.readout-value {
+  font-size: var(--text-console);
+  font-weight: 700;
+  line-height: 1.1;
+}
+.readout-sub {
+  font-size: var(--text-sm);
+  color: var(--console-muted);
+}
+.readout-ok .readout-value {
+  color: #7fd6c9;
+}
+.readout-caution .readout-value {
+  color: #f6c768;
+}
+.readout-danger .readout-value {
+  color: #ff8a7a;
+}
+.gauge {
+  grid-column: 1 / -1;
+  display: block;
+  width: 160px;
+  height: 4px;
+  margin-top: var(--space-1);
+  background: #7fd6c9;
+  overflow: hidden;
+}
+.readout-caution .gauge {
+  background: #f6c768;
+}
+.readout-danger .gauge {
+  background: #ff8a7a;
+}
+.gauge-used {
+  display: block;
+  height: 100%;
+  background: #3b4d5e;
+  transform-origin: left center;
+  transition: transform 400ms var(--ease-out);
+}
+.console .console-end {
+  background: transparent;
+  color: var(--console-ink);
+  border-color: var(--console-muted);
+}
+.console .console-end:hover {
+  border-color: var(--console-ink);
+}
+
+/* 공지: 사용자가 일으키지 않은 유일한 움직임 */
+.notice-strip {
+  display: grid;
+  gap: 1px;
+  background: var(--rule);
+}
+.notice {
+  display: flex;
+  gap: var(--space-4);
+  align-items: flex-start;
+  padding: var(--space-4) var(--space-5);
+  background: var(--caution-surface);
+  border-left: 4px solid var(--caution);
+  animation: notice-in var(--duration-notice) var(--ease-out);
+}
+.notice-body {
+  flex: 1;
+}
+.notice-from {
+  margin: 0;
+  font-size: var(--text-sm);
+  font-weight: 700;
+  color: var(--caution-ink);
+}
+.notice-title {
+  font-size: var(--text-lg);
+  margin: var(--space-1) 0;
+}
+.notice-read {
+  animation: none;
+  margin-bottom: var(--space-3);
+}
+@keyframes notice-in {
+  from {
+    transform: translateY(-8px);
+    opacity: 0;
+  }
+}
+.workspace-alert {
+  margin: 0;
+}
+
+.workspace-body {
+  flex: 1;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: minmax(200px, 240px) minmax(0, 1fr) minmax(340px, 38%);
+}
+.pane {
+  min-height: 0;
+  overflow-y: auto;
+}
+.pane-nav {
+  border-right: 1px solid var(--rule);
+  background: var(--paper-sunken);
+}
+.pane-task {
+  padding: var(--space-6) var(--space-8);
+}
+.pane-ai {
+  border-left: 1px solid var(--rule);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* 왼쪽 문항 목록 */
+.task-nav {
+  padding: var(--space-3) 0;
+}
+.task-nav-heading {
+  margin: var(--space-5) var(--space-4) var(--space-1);
+  font-size: var(--text-xs);
+  color: var(--ink-muted);
+  font-weight: 700;
+}
+.task-nav-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.task-nav-item {
+  width: 100%;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  column-gap: var(--space-2);
+  padding: var(--space-2) var(--space-4);
+  border: 0;
+  border-left: 3px solid transparent;
+  background: transparent;
+  text-align: left;
+  cursor: pointer;
+}
+.task-nav-item:hover {
+  background: var(--paper);
+}
+.task-nav-item[aria-current='true'] {
+  background: var(--paper);
+  border-left-color: var(--action);
+  font-weight: 700;
+}
+.task-nav-key {
+  color: var(--ink-muted);
+}
+.task-state,
+.task-kind {
+  grid-column: 2;
+  font-size: var(--text-xs);
+  color: var(--ink-muted);
+}
+.task-state-done {
+  color: var(--ok);
+  font-weight: 700;
+}
+.task-state-progress {
+  color: var(--caution-ink);
+}
+
+/* 가운데: Case 하나를 위에서 아래로 이어지는 한 페이지로(2026-09-27) */
+.case-document {
+  display: grid;
+  gap: var(--space-8);
+  padding-bottom: 40vh; /* 마지막 문항도 화면 위쪽까지 올려 '지금 보는 문항'이 되게 한다 */
+}
+.task-section {
+  padding-top: var(--space-6);
+  border-top: 2px solid var(--ink);
+  scroll-margin-top: var(--space-4);
+}
+.task-conditions {
+  display: grid;
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-4);
+  background: var(--paper-sunken);
+  border-left: 3px solid var(--rule);
+  font-size: var(--text-sm);
+}
+.task-condition {
+  margin: 0;
+}
+.task-guidance ul {
+  margin: var(--space-1) 0 0;
+  padding-left: var(--space-5);
+}
+.answer-note {
+  min-height: 80px;
+}
+
+/* 가운데 문항·답안 */
+.task {
+  max-width: 760px;
+  display: grid;
+  gap: var(--space-4);
+}
+.task-key {
+  margin: 0;
+  color: var(--ink-muted);
+  font-weight: 700;
+}
+.task-title {
+  font-size: var(--text-xl);
+}
+.task-prompt {
+  margin: 0;
+  padding-bottom: var(--space-4);
+  border-bottom: 1px solid var(--rule);
+}
+.task-subheading {
+  font-size: var(--text-md);
+  margin-bottom: var(--space-2);
+}
+.answer {
+  display: grid;
+  gap: var(--space-3);
+}
+.answer-text {
+  min-height: 280px;
+}
+.answer-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+.text-danger {
+  color: var(--danger);
+}
+.choices {
+  display: grid;
+  gap: var(--space-2);
+  margin: 0;
+  padding: var(--space-4);
+  border: 1px solid var(--rule);
+}
+.choices legend {
+  font-weight: 700;
+  font-size: var(--text-sm);
+  padding: 0 var(--space-1);
+}
+.choice {
+  display: flex;
+  gap: var(--space-2);
+  align-items: center;
+}
+
+/* 오른쪽 AI 대화 */
+.chat {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+.chat-header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-4);
+  border-bottom: 1px solid var(--rule);
+}
+.chat-title {
+  flex: 1;
+  font-size: var(--text-md);
+}
+.select-compact {
+  width: auto;
+  min-height: 32px;
+  font-size: var(--text-sm);
+}
+.chat-log {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  list-style: none;
+  margin: 0;
+  padding: var(--space-4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+.chat-empty {
+  padding: var(--space-4);
+  border: 1px dashed var(--rule-strong);
+}
+.chat-msg p {
+  margin: 0;
+}
+.chat-user {
+  align-self: flex-end;
+  max-width: 90%;
+  padding: var(--space-3) var(--space-4);
+  border: 1px solid var(--rule);
+}
+.chat-assistant {
+  padding: var(--space-3) var(--space-4);
+  background: var(--ai-surface);
+  border-left: 3px solid var(--action);
+}
+.chat-assistant.is-streaming {
+  border-left-style: dashed;
+}
+.chat-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  margin-top: var(--space-2) !important;
+}
+.chip-list {
+  list-style: none;
+  margin: 0 0 var(--space-2);
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: 2px var(--space-2);
+  border: 1px solid var(--rule-strong);
+  background: var(--paper-sunken);
+  font-size: var(--text-sm);
+}
+.chip-remove {
+  border: 0;
+  background: transparent;
+  color: var(--danger);
+  cursor: pointer;
+  font-size: var(--text-xs);
+  font-weight: 700;
+}
+.chat-problem {
+  display: flex;
+  gap: var(--space-3);
+  align-items: center;
+  margin: 0 var(--space-4) var(--space-2);
+}
+.chat-readonly {
+  padding: var(--space-4);
+  border-top: 1px solid var(--rule);
+  margin: 0;
+}
+.composer {
+  display: grid;
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-4) var(--space-4);
+  border-top: 1px solid var(--rule);
+}
+.composer-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+}
+.attach-menu {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1);
+}
+
+/* 자료 시트 */
+.sheet-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(23, 33, 43, 0.35);
+  display: flex;
+  justify-content: flex-end;
+  z-index: 10;
+}
+.sheet {
+  width: min(960px, 100%);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background: var(--paper);
+}
+.sheet-header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-4) var(--space-5);
+  border-bottom: 1px solid var(--rule);
+}
+.sheet-header h2 {
+  flex: 1;
+  font-size: var(--text-lg);
+}
+.sheet-toolbar {
+  display: flex;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-5);
+  background: var(--paper-sunken);
+  border-bottom: 1px solid var(--rule);
+}
+.sheet-loading {
+  padding: var(--space-5);
+}
+.field-inline {
+  grid-template-columns: auto auto;
+  align-items: center;
+}
+.input-narrow {
+  width: 88px;
+}
+.table-scroll {
+  flex: 1;
+  overflow: auto;
+}
+.data-table {
+  border-collapse: collapse;
+  font-size: var(--text-sm);
+  width: max-content;
+  min-width: 100%;
+}
+.data-table th,
+.data-table td {
+  padding: var(--space-1) var(--space-3);
+  border-bottom: 1px solid var(--rule);
+  text-align: left;
+  white-space: nowrap;
+}
+.data-table thead th {
+  position: sticky;
+  top: 0;
+  background: var(--paper-sunken);
+}
+/* 고른 행과 고른 컬럼이 겹치는 칸 = 실제로 AI에 가는 값 */
+.data-table tr.is-selected td.is-picked {
+  background: #d7e6f7;
+}
+.data-table tr.is-selected td,
+.data-table td.is-picked,
+.data-table th.is-picked {
+  background: var(--ai-surface);
+}
+.select-cell {
+  width: 32px;
+}
+.column-pick {
+  display: inline-flex;
+  gap: var(--space-1);
+  align-items: center;
+  cursor: pointer;
+}
+.pdf-frame {
+  flex: 1;
+  width: 100%;
+  border: 0;
+}
+
+/* 좁은 화면: AI 칸을 아래로 */
+@media (max-width: 1023px) {
+  /* minmax(0, 1fr): Case 목록이 내용 폭만큼 칸을 넓혀 화면 밖으로 밀어내지 않고 자체 가로 스크롤을 쓰게 한다 */
+  .console {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-2);
+  }
+  .console > * {
+    min-width: 0;
+  }
+  .console-identity {
+    flex-wrap: wrap;
+  }
+  .console-readouts {
+    justify-content: space-between;
+    flex-wrap: wrap;
+    row-gap: var(--space-3);
+  }
+  .workspace {
+    height: auto;
+  }
+  .workspace-body {
+    grid-template-columns: 1fr;
+  }
+  .pane-nav,
+  .pane-ai {
+    border: 0;
+    border-top: 1px solid var(--rule);
+  }
+  .pane-task {
+    padding: var(--space-5) var(--space-4);
+  }
+  .pane-ai {
+    min-height: 520px;
+  }
+  .gauge {
+    width: 100px;
+  }
+}

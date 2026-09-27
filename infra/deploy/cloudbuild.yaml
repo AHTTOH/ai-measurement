@@ -1,0 +1,9 @@
+# 이미지 빌드(2026-09-27, 결정 D18). 실행: infra/deploy/deploy-cloud.sh
+# _IMAGE는 배포 스크립트가 넘긴다(예: asia-northeast3-docker.pkg.dev/<프로젝트>/aim/app:<태그>)
+steps:
+  - name: gcr.io/cloud-builders/docker
+    args: ['build', '-f', 'infra/deploy/Dockerfile', '-t', '${_IMAGE}', '.']
+images:
+  - '${_IMAGE}'
+options:
+  logging: CLOUD_LOGGING_ONLY

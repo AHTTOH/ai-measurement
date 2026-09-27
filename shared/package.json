@@ -1,0 +1,20 @@
+{
+  "name": "@ai-measurement/shared",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts",
+    "./node": "./src/node/index.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc -p tsconfig.json"
+  },
+  "dependencies": {
+    "csv-parse": "^7.0.3",
+    "csv-stringify": "^6.9.0",
+    "pdf-lib": "^1.17.1",
+    "recheck": "^4.5.0",
+    "zod": "^4.6.5"
+  }
+}

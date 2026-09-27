@@ -1,0 +1,23 @@
+{
+  "name": "@ai-measurement/server",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc -p tsconfig.json"
+  },
+  "dependencies": {
+    "@ai-measurement/infra": "*",
+    "@ai-measurement/shared": "*",
+    "@anthropic-ai/sdk": "^0.128.0",
+    "@hono/node-server": "^2.1.1",
+    "drizzle-orm": "^0.45.3",
+    "fflate": "^0.8.3",
+    "hono": "^4.13.9",
+    "pdf-lib": "^1.17.1",
+    "zod": "^4.6.5"
+  }
+}

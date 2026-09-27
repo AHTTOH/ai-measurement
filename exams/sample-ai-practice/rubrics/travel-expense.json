@@ -1,0 +1,151 @@
+{
+  "caseKey": "travel-expense",
+  "axes": {
+    "judgment": {
+      "max": 30,
+      "rules": [
+        {
+          "id": "j3-choice",
+          "type": "choice_answer",
+          "description": "3-1 부적절 자료 식별",
+          "subquestion": "3-1",
+          "scoring": "per_option",
+          "points": 8
+        },
+        {
+          "id": "j3-no-confidential",
+          "type": "pages_withheld",
+          "description": "규정 3쪽(대외비)을 AI에 전달하지 않음",
+          "material": "travel-policy",
+          "pages": [
+            "page-3"
+          ],
+          "points": 8
+        },
+        {
+          "id": "j3-no-name",
+          "type": "columns_withheld",
+          "description": "신청자 성명을 AI에 전달하지 않음",
+          "material": "expenses",
+          "columns": [
+            "신청자"
+          ],
+          "points": 4
+        },
+        {
+          "id": "j3-needed",
+          "type": "columns_sent",
+          "description": "판정에 필요한 직급·숙박비·일비·합계를 AI에 제공",
+          "material": "expenses",
+          "columns": [
+            "직급",
+            "숙박비",
+            "일비",
+            "합계"
+          ],
+          "minDistinctValues": 3,
+          "points": 6
+        },
+        {
+          "id": "j3-patterns",
+          "type": "patterns_absent",
+          "description": "대화 본문에 주민등록번호·전화번호 형식이 없음",
+          "patterns": [
+            "rrn",
+            "mobile"
+          ],
+          "points": 4
+        }
+      ],
+      "criteria": []
+    },
+    "usage": {
+      "max": 35,
+      "rules": [
+        {
+          "id": "u3-revise",
+          "type": "answer_revised_after_notice",
+          "description": "공지 전에 쓴 3-4 결재 의견서를 공지 이후 고쳐 다시 제출",
+          "notice": "overseas-per-diem-change",
+          "subquestion": "3-4",
+          "firstAnswerAfterNoticeCounts": false,
+          "points": 5
+        }
+      ],
+      "criteria": [
+        {
+          "id": "u3-context",
+          "description": "규정의 필요한 부분(한도·정산·사전 승인)만 골라 AI에 제공하고 판단 기준을 분명히 전달했다",
+          "points": 8
+        },
+        {
+          "id": "u3-verify",
+          "description": "AI의 한도 초과 판정과 금액 계산을 직접 다시 계산해 검증했다",
+          "points": 10
+        },
+        {
+          "id": "u3-fix",
+          "description": "AI가 규정을 잘못 적용했을 때(직급 구분, 사전 승인 예외 등) 바로잡았다",
+          "points": 7
+        },
+        {
+          "id": "u3-change",
+          "description": "변경된 해외 일비 기준을 AI 작업과 결론에 반영했다",
+          "points": 5
+        }
+      ]
+    },
+    "output": {
+      "max": 35,
+      "rules": [
+        {
+          "id": "o3-violations",
+          "type": "numeric_value",
+          "description": "한도 초과 신청 건수",
+          "subquestion": "3-2",
+          "label": "한도를 넘은 신청 건수(사전 승인 건 제외)",
+          "expected": 7,
+          "tolerance": 0,
+          "points": 5
+        },
+        {
+          "id": "o3-sum-errors",
+          "type": "numeric_value",
+          "description": "합계 계산이 틀린 신청 건수",
+          "subquestion": "3-3",
+          "label": "합계 계산이 틀린 신청 건수",
+          "expected": 3,
+          "tolerance": 0,
+          "points": 5
+        },
+        {
+          "id": "o3-new-rule",
+          "type": "numeric_value",
+          "description": "새 기준 적용 시 한도 초과 건수",
+          "subquestion": "3-5",
+          "label": "새 해외 일비 기준 적용 시 한도 초과 신청 건수",
+          "expected": 9,
+          "tolerance": 0,
+          "points": 5
+        }
+      ],
+      "criteria": [
+        {
+          "id": "o3-table",
+          "description": "3-2 표의 신청번호, 초과 항목, 초과 금액이 정확하다",
+          "points": 8
+        },
+        {
+          "id": "o3-opinion",
+          "description": "3-4 결재 의견서가 반려 사유를 규정 조항과 이어 설명한다",
+          "points": 7
+        },
+        {
+          "id": "o3-exceptions",
+          "description": "사전 승인 예외를 올바르게 처리했다",
+          "points": 5
+        }
+      ]
+    }
+  }
+}

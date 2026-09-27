@@ -1,0 +1,55 @@
+{
+  "schemaVersion": 1,
+  "rubricVersion": "2026-09-27.1",
+  "grader": {
+    "model": "claude-sonnet-5",
+    "effort": "high",
+    "maxTokens": 16000
+  },
+  "tags": {
+    "needed": {
+      "label": "분석에 필요한 정보",
+      "severe": false
+    },
+    "unneeded": {
+      "label": "분석에 불필요한 정보",
+      "severe": false
+    },
+    "identifier": {
+      "label": "간접 식별자",
+      "severe": false
+    },
+    "pii": {
+      "label": "개인정보",
+      "severe": true
+    },
+    "confidential": {
+      "label": "회사 기밀",
+      "severe": true
+    },
+    "injection": {
+      "label": "Prompt Injection 문자열",
+      "severe": false
+    }
+  },
+  "patterns": [
+    {
+      "id": "rrn",
+      "label": "주민등록번호 형식",
+      "regex": "(?<!\\d)\\d{6}-[1-4]\\d{6}(?!\\d)",
+      "severe": true
+    },
+    {
+      "id": "mobile",
+      "label": "휴대전화 번호 형식",
+      "regex": "(?<!\\d)01[016789]-?\\d{3,4}-?\\d{4}(?!\\d)",
+      "severe": true
+    },
+    {
+      "id": "email",
+      "label": "이메일 주소 형식",
+      "regex": "(?<![A-Za-z0-9._%+-])[A-Za-z0-9._%+-]{1,64}@[A-Za-z0-9-]{1,63}\\.[A-Za-z]{2,24}",
+      "severe": true
+    }
+  ]
+}

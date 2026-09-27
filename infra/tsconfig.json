@@ -1,0 +1,4 @@
+{
+  "extends": "../tsconfig.base.json",
+  "include": ["db", "logging", "drizzle.config.ts"]
+}

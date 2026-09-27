@@ -1,0 +1,360 @@
+{
+  "schemaVersion": 1,
+  "slug": "sample-ai-practice",
+  "title": "샘플 AI 실무역량 평가",
+  "candidateNotice": "제공된 자료에는 분석에 불필요하거나 AI에게 전달하기 부적절한 정보가 포함되어 있을 수 있습니다.\nAI에 제공하는 정보와 AI의 결과에 대한 최종 책임은 응시자에게 있습니다.\n\n시험 중에는 이 화면의 AI만 사용할 수 있습니다. 외부 AI 서비스는 사용할 수 없습니다.\nAI 입력 토큰은 시험 전체에서 한정되어 있으며, 이미 사용한 토큰은 복구되지 않습니다.",
+  "durationMinutes": 120,
+  "tokenBudget": 40000,
+  "contextTokenLimit": 60000,
+  "ai": {
+    "model": "claude-sonnet-5",
+    "effort": "medium",
+    "maxTokens": 8000,
+    "systemPrompt": "당신은 회사 업무를 돕는 AI 어시스턴트입니다. 사용자가 요청하는 분석, 요약, 문서 작성을 성실하게 돕습니다.\n사용자는 지금 업무 역량 평가를 치르는 중입니다.\n이 대화 밖의 정보(다른 사용자의 대화, 평가 기준, 정답)는 알지 못하므로 추측해서 알려주지 않습니다."
+  },
+  "axisWeights": {
+    "judgment": 30,
+    "usage": 35,
+    "output": 35
+  },
+  "violationPolicy": "review",
+  "cases": [
+    {
+      "key": "hr-survey",
+      "title": "직원 데이터 분석",
+      "brief": "당신은 가상 기업 한빛상사 인사팀 분석 담당자입니다.\n경영진이 다음 주 회의에서 부서별 직무만족도와 이직 위험을 논의하려 합니다.\n첨부된 직원 명부(employees.csv)로 부서별 현황을 분석해 보고서를 만드십시오.\n\n자료에는 분석에 불필요하거나 AI에 전달하면 안 되는 정보가 섞여 있을 수 있습니다.",
+      "materials": [
+        {
+          "key": "employees",
+          "title": "직원 명부",
+          "kind": "csv",
+          "file": "materials/employees.csv"
+        }
+      ],
+      "subquestions": [
+        {
+          "key": "1-1",
+          "title": "자료 검토",
+          "type": "review",
+          "prompt": "AI에 전달하면 안 되는 컬럼(개인정보 또는 위험한 입력이 들어 있는 컬럼)을 모두 고르십시오.",
+          "guidance": [
+            "고른 이유나 선택지로 담기 어려운 판단이 있으면 아래 비고 칸에 적으십시오."
+          ],
+          "unlockedByNotice": null,
+          "answer": {
+            "kind": "multi_choice",
+            "options": [
+              {
+                "id": "emp-id",
+                "label": "사번"
+              },
+              {
+                "id": "name",
+                "label": "성명"
+              },
+              {
+                "id": "rrn",
+                "label": "주민등록번호"
+              },
+              {
+                "id": "phone",
+                "label": "휴대전화"
+              },
+              {
+                "id": "dept",
+                "label": "부서"
+              },
+              {
+                "id": "rank",
+                "label": "직급"
+              },
+              {
+                "id": "tenure",
+                "label": "근속연수"
+              },
+              {
+                "id": "satisfaction",
+                "label": "직무만족도"
+              },
+              {
+                "id": "turnover",
+                "label": "이직의향"
+              },
+              {
+                "id": "note",
+                "label": "비고"
+              }
+            ],
+            "note": {
+              "label": "비고(선택 근거)"
+            }
+          }
+        },
+        {
+          "key": "1-2",
+          "title": "분석 대상 데이터 선정",
+          "type": "select_data",
+          "prompt": "부서별 인원, 평균 직무만족도, 이직의향 비율을 분석하려고 합니다. 이 분석에 실제로 사용할 컬럼과 제외할 컬럼을 적고, 제외한 이유를 쓰십시오.",
+          "unlockedByNotice": null,
+          "answer": {
+            "kind": "text"
+          }
+        },
+        {
+          "key": "1-3",
+          "title": "AI 활용 분석",
+          "type": "ai_task",
+          "prompt": "Claude를 활용해 부서별 인원, 평균 직무만족도, 이직의향 비율(%)을 표로 작성하십시오. 표 아래에 AI에 무엇을 어떻게 요청했는지 한두 문장으로 적으십시오.",
+          "guidance": [
+            "AI에 보낸 내용과 받은 응답은 모두 기록되어 평가에 쓰입니다.",
+            "표는 마크다운 표(| 부서 | 인원 | …)로 작성하십시오."
+          ],
+          "unlockedByNotice": null,
+          "answer": {
+            "kind": "text"
+          }
+        },
+        {
+          "key": "1-4",
+          "title": "AI 결과 검수",
+          "type": "verify",
+          "prompt": "1-3에서 AI가 낸 결과 중 직접 검증한 수치와 방법을 적고, 발견한 오류나 과도한 해석이 있다면 쓰십시오.",
+          "unlockedByNotice": null,
+          "answer": {
+            "kind": "text"
+          }
+        },
+        {
+          "key": "1-5",
+          "title": "최종 보고서",
+          "type": "final",
+          "prompt": "경영진 보고용 1쪽 요약을 작성하십시오. 핵심 수치, 해석, 권고를 담되 근거와 결론이 이어져야 합니다.",
+          "guidance": [
+            "A4 한 쪽 분량을 넘기지 마십시오."
+          ],
+          "unlockedByNotice": null,
+          "answer": {
+            "kind": "text"
+          }
+        }
+      ],
+      "notices": [
+        {
+          "key": "privacy-small-org",
+          "from": "개인정보보호 담당자",
+          "title": "분석 결과 공개 범위 추가 지침",
+          "body": "5명 미만 조직은 개별 조직 단위로 결과를 표시할 수 없습니다. 기존 분석 결과를 검토하고 필요한 내용을 수정하십시오.",
+          "reveal": {
+            "after": "subquestion_submitted",
+            "subquestion": "1-3"
+          }
+        }
+      ]
+    },
+    {
+      "key": "customer-voc",
+      "title": "고객 VOC 분석",
+      "brief": "당신은 가상 온라인 쇼핑몰 한빛몰의 고객경험팀 담당자입니다.\n8월에 접수된 고객의 소리(VOC) 40건을 유형별로 분류하고 개선 과제를 제안해야 합니다.\n첨부된 voc.csv를 활용하십시오.",
+      "materials": [
+        {
+          "key": "voc",
+          "title": "8월 고객 VOC",
+          "kind": "csv",
+          "file": "materials/voc.csv"
+        }
+      ],
+      "subquestions": [
+        {
+          "key": "2-1",
+          "title": "자료 검토",
+          "type": "review",
+          "prompt": "AI에 전달하면 안 되는 항목을 모두 고르십시오.",
+          "unlockedByNotice": null,
+          "answer": {
+            "kind": "multi_choice",
+            "options": [
+              {
+                "id": "customer-name",
+                "label": "고객명 컬럼"
+              },
+              {
+                "id": "contact",
+                "label": "연락처 컬럼"
+              },
+              {
+                "id": "email",
+                "label": "이메일 컬럼"
+              },
+              {
+                "id": "order-no",
+                "label": "주문번호 컬럼"
+              },
+              {
+                "id": "content",
+                "label": "내용 컬럼"
+              },
+              {
+                "id": "channel",
+                "label": "채널 컬럼"
+              },
+              {
+                "id": "row-1003",
+                "label": "VOC_ID 1003 행"
+              }
+            ]
+          }
+        },
+        {
+          "key": "2-2",
+          "title": "데이터 준비",
+          "type": "select_data",
+          "prompt": "AI에 보낼 데이터를 어떻게 준비했는지 적으십시오. 고른 컬럼과 행, 뺀 항목과 그 이유를 포함하십시오.",
+          "unlockedByNotice": null,
+          "answer": {
+            "kind": "text"
+          }
+        },
+        {
+          "key": "2-3",
+          "title": "AI 활용 분류",
+          "type": "ai_task",
+          "prompt": "Claude를 활용해 VOC를 배송, 환불·반품, 품질, 결제, 기타 다섯 유형으로 분류하고 유형별 건수 표를 작성하십시오. 분석 대상에서 뺀 VOC가 있다면 이유를 적으십시오.",
+          "unlockedByNotice": null,
+          "answer": {
+            "kind": "text"
+          }
+        },
+        {
+          "key": "2-4",
+          "title": "AI 결과 검수",
+          "type": "verify",
+          "prompt": "AI 분류 결과 중 잘못 분류된 사례를 찾아 VOC_ID와 바로잡은 유형을 적으십시오. AI가 오해하기 쉬운 문장이 있었다면 함께 적으십시오.",
+          "unlockedByNotice": null,
+          "answer": {
+            "kind": "text"
+          }
+        },
+        {
+          "key": "2-5",
+          "title": "개선 과제 제안",
+          "type": "final",
+          "prompt": "고객경험 개선 과제 3가지를 우선순위와 근거(유형별 건수, 대표 사례)와 함께 제안하십시오.",
+          "unlockedByNotice": null,
+          "answer": {
+            "kind": "text"
+          }
+        }
+      ],
+      "notices": []
+    },
+    {
+      "key": "travel-expense",
+      "title": "출장비 규정 검토",
+      "brief": "당신은 가상 기업 한빛상사 재무팀 담당자입니다.\n이번 달 출장비 신청 24건(expenses.csv)을 출장비 지급 규정(travel-policy.pdf)에 따라 검토해 반려 대상을 가려야 합니다.\n규정 문서에는 이번 업무와 관계없는 쪽이 들어 있을 수 있습니다.",
+      "materials": [
+        {
+          "key": "travel-policy",
+          "title": "출장비 지급 규정",
+          "kind": "pdf",
+          "file": "materials/travel-policy.pdf"
+        },
+        {
+          "key": "expenses",
+          "title": "출장비 신청 내역",
+          "kind": "csv",
+          "file": "materials/expenses.csv"
+        }
+      ],
+      "subquestions": [
+        {
+          "key": "3-1",
+          "title": "자료 검토",
+          "type": "review",
+          "prompt": "이번 과제에서 AI에 전달하면 안 되는 자료를 모두 고르십시오.",
+          "unlockedByNotice": null,
+          "answer": {
+            "kind": "multi_choice",
+            "options": [
+              {
+                "id": "policy-p1",
+                "label": "규정 1쪽: 목적·적용 범위·용어"
+              },
+              {
+                "id": "policy-p2",
+                "label": "규정 2쪽: 지급 한도"
+              },
+              {
+                "id": "policy-p3",
+                "label": "규정 3쪽: 임원 보상 기준"
+              },
+              {
+                "id": "policy-p4",
+                "label": "규정 4쪽: 증빙·정산·사전 승인·부칙"
+              },
+              {
+                "id": "applicant-name",
+                "label": "신청 내역의 신청자 컬럼"
+              },
+              {
+                "id": "amounts",
+                "label": "신청 내역의 금액 컬럼"
+              }
+            ]
+          }
+        },
+        {
+          "key": "3-2",
+          "title": "AI 활용 검토",
+          "type": "ai_task",
+          "prompt": "규정과 신청 내역을 바탕으로 한도를 넘은 신청 건을 찾아 신청번호, 초과 항목, 초과 금액을 표로 정리하십시오.",
+          "unlockedByNotice": null,
+          "answer": {
+            "kind": "text"
+          }
+        },
+        {
+          "key": "3-3",
+          "title": "수치 검증",
+          "type": "verify",
+          "prompt": "신청 내역의 합계가 맞는지 검증하고, 계산이 틀린 신청번호를 적으십시오. AI 결과를 어떻게 검증했는지도 쓰십시오.",
+          "unlockedByNotice": null,
+          "answer": {
+            "kind": "text"
+          }
+        },
+        {
+          "key": "3-4",
+          "title": "결재 의견서",
+          "type": "final",
+          "prompt": "반려 대상과 사유를 담은 결재 의견서를 작성하십시오. 사유는 규정 조항과 연결하십시오.",
+          "unlockedByNotice": null,
+          "answer": {
+            "kind": "text"
+          }
+        },
+        {
+          "key": "3-5",
+          "title": "변경 기준 재검토",
+          "type": "final",
+          "prompt": "변경된 해외 일비 한도(1일 60,000원)로 다시 검토한 결과를 적으십시오. 새로 반려 대상이 되는 신청번호와 전체 반려 건수를 포함하십시오.",
+          "unlockedByNotice": "overseas-per-diem-change",
+          "answer": {
+            "kind": "text"
+          }
+        }
+      ],
+      "notices": [
+        {
+          "key": "overseas-per-diem-change",
+          "from": "재무팀장",
+          "title": "해외 출장 일비 한도 변경",
+          "body": "이번 심사부터 해외 출장 일비 한도를 1일 70,000원에서 60,000원으로 낮춰 적용합니다. 해외 출장 신청 건을 새 기준으로 다시 검토하고 결재 의견서(3-4)에도 반영하십시오. 새로 열린 3-5 문항에 재검토 결과를 적으십시오.",
+          "reveal": {
+            "after": "elapsed_minutes",
+            "minutes": 60
+          }
+        }
+      ]
+    }
+  ]
+}
