@@ -2,6 +2,7 @@ import { useEffect, useState, type FormEvent, type ReactElement } from 'react';
 import { Link, Outlet, useNavigate } from 'react-router';
 import { adminApi } from '../api/admin-client';
 import { ApiError, errorMessage } from '../api/http';
+import { BrandLogo } from '../ui/BrandLogo';
 import '../styles/admin.css';
 
 /** 관리자 화면 틀. 로그인하지 않았으면 로그인 화면으로 보낸다 */
@@ -31,7 +32,8 @@ export function AdminLayout(): ReactElement {
     <div className="admin">
       <header className="admin-header">
         <Link to="/admin" className="admin-brand">
-          AI 실무역량 평가 운영
+          <BrandLogo tone="dark" className="admin-brand-logo" />
+          <span>AI 실무역량 평가 운영</span>
         </Link>
         <span className="muted small">{username}</span>
         <button type="button" className="btn btn-quiet" onClick={() => void logout()}>
@@ -61,6 +63,7 @@ export function AdminLoginPage(): ReactElement {
   return (
     <main className="admin-login">
       <form className="admin-login-form" onSubmit={(e) => void submit(e)}>
+        <BrandLogo className="admin-login-logo" />
         <h1>운영자 로그인</h1>
         <label className="field">
           <span>아이디</span>

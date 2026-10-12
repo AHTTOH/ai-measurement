@@ -7,7 +7,8 @@
   align-items: center;
   gap: var(--space-4);
   padding: var(--space-3) var(--space-6);
-  background: var(--console);
+  /* 로고가 올라가므로 CI가 허용한 바탕(Black BG)을 쓴다 */
+  background: var(--brand-night);
   color: var(--console-ink);
 }
 .admin-header .muted {
@@ -18,9 +19,22 @@
 }
 .admin-brand {
   flex: 1;
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  min-width: 0;
   color: inherit;
   text-decoration: none;
   font-weight: 700;
+}
+.admin-brand-logo {
+  height: 18px;
+  width: auto;
+  flex: none;
+}
+.admin-login-logo {
+  height: 22px;
+  width: auto;
 }
 .admin-page {
   max-width: 1280px;
@@ -55,7 +69,7 @@
   border-top: 1px solid var(--rule);
 }
 .admin-page a {
-  color: var(--action);
+  color: var(--action-text);
 }
 .admin-table {
   width: 100%;
@@ -267,7 +281,7 @@
   gap: var(--space-4);
   padding: var(--space-8);
   background: var(--paper);
-  border-top: 4px solid var(--console);
+  border-top: 4px solid var(--brand-orange);
 }
 .admin-login-form h1 {
   font-size: var(--text-xl);

@@ -1,18 +1,26 @@
-/* 화면 설계: docs/plan/2026-09-27-웹-화면-설계.md 의 확정 토큰 */
+/*
+ * 화면 설계: docs/plan/2026-09-27-웹-화면-설계.md 의 토큰 구조.
+ * 2026-10-01 색을 OK금융그룹 CI 톤으로 바꿨다(남색·파랑 → 브라운·오렌지). 원색은 아래 --brand-*.
+ */
 :root {
-  --ink: #17212b;
-  --ink-muted: #5b6875;
+  --ink: #231c1e;
+  --ink-muted: #6f6366;
   --paper: #ffffff;
-  --paper-sunken: #f3f5f7;
-  --rule: #dde2e7;
-  --rule-strong: #c3cbd3;
-  --console: #1f2f3d;
-  --console-ink: #e8eef4;
-  --console-muted: #9fb0c0;
-  --ai-surface: #eef4fa;
-  --action: #1d5fbf;
-  --action-hover: #174e9e;
-  --action-ink: #ffffff;
+  /* 바탕 면은 CI Bright Gray(#e3dfda) 계열을 옅게 쓴다 */
+  --paper-sunken: #f7f5f3;
+  --rule: #e6e1dd;
+  --rule-strong: #cbc3be;
+  /* 상단 콘솔 바: CI Dark Brown 바탕(로고 배경 규정 색) */
+  --console: #55464a;
+  --console-ink: #fbf8f6;
+  --console-muted: #d9cfcb;
+  --ai-surface: #fdf3ee;
+  /* 버튼 바탕은 CI Orange. 흰 글자는 대비 3.6:1이라 작은 글자 기준에 못 미쳐 짙은 글자를 쓴다(5.2:1) */
+  --action: #f04922;
+  --action-hover: #ff5b33;
+  --action-ink: #1a1214;
+  /* 오렌지를 흰 바탕 글자(링크 등)로 쓸 때. CI Orange 를 어둡게 한 값(대비 5.5:1) */
+  --action-text: #c2370f;
   --ok: #0f7c74;
   --caution: #b7791f;
   /* 주의 색을 글자에 쓸 때. --caution은 흰 바탕 대비 3.6:1이라 작은 글자 기준(4.5:1)에 못 미친다(2026-09-27 axe 점검) */
@@ -21,7 +29,18 @@
   --danger: #c0392b;
   --danger-surface: #fbeceb;
 
-  --font-body: 'Pretendard Variable', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  /* OK금융그룹 CI 시그니처 컬러(okfngroup.com 기업 아이덴티티 > CI 소개, 2026-10-01 확인) */
+  --brand-orange: #f04922;
+  --brand-brown: #55464a;
+  --brand-yellow: #faa619;
+  --brand-gray: #e3dfda;
+  /* 흰 바탕 메인 화면의 글자색. 브라운 계열로 시그니처와 어울리게 한다(흰 바탕 대비 15:1, 5.6:1) */
+  --brand-ink: #231c1e;
+  --brand-ink-muted: #6f6366;
+  /* CI Black BG. 로고를 올리는 어두운 바탕(관리자 헤더)과 오렌지 위 글자색 */
+  --brand-night: #0e0b0c;
+
+  --font-body:'Pretendard Variable', system-ui, -apple-system, 'Segoe UI', sans-serif;
   --text-xs: 12px;
   --text-sm: 13px;
   --text-md: 15px;

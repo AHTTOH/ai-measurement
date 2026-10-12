@@ -2,7 +2,9 @@ import type { CandidateStateResponse } from '@ai-measurement/shared';
 import { useState, type FormEvent, type ReactElement } from 'react';
 import { candidateApi } from '../api/candidate-client';
 import { errorMessage } from '../api/http';
+import { BrandLogo } from '../ui/BrandLogo';
 import { formatDateTime, formatNumber } from '../ui/format';
+import { LoginLanding } from './LoginLanding';
 
 /** 응시번호 + PIN 로그인(결정 D8) */
 export function LoginPage({ onLoggedIn }: { onLoggedIn: () => Promise<void> }): ReactElement {
@@ -24,10 +26,12 @@ export function LoginPage({ onLoggedIn }: { onLoggedIn: () => Promise<void> }): 
     }
   };
   return (
-    <main className="entry">
-      <form className="entry-card" onSubmit={(e) => void submit(e)}>
-        <h1 className="entry-title">AI 실무역량 평가</h1>
-        <p className="muted">감독관에게 받은 응시번호와 PIN을 입력하십시오.</p>
+    <LoginLanding>
+      <form className="landing-card" aria-labelledby="login-title" onSubmit={(e) => void submit(e)}>
+        <h2 id="login-title" className="landing-card-title">
+          응시자 로그인
+        </h2>
+        <p className="landing-card-lead">감독관에게 받은 응시번호와 PIN을 입력하십시오.</p>
         <label className="field">
           <span>응시번호</span>
           <input className="input" autoComplete="username" value={candidateNo} onChange={(e) => setCandidateNo(e.target.value)} required />
@@ -41,11 +45,11 @@ export function LoginPage({ onLoggedIn }: { onLoggedIn: () => Promise<void> }): 
             {error}
           </p>
         )}
-        <button className="btn btn-primary entry-submit" type="submit" disabled={busy}>
+        <button className="btn landing-submit" type="submit" disabled={busy}>
           {busy ? '확인 중' : '로그인'}
         </button>
       </form>
-    </main>
+    </LoginLanding>
   );
 }
 
@@ -69,6 +73,7 @@ export function LobbyPage({ state, onStarted, onLogout }: { state: CandidateStat
   return (
     <main className="entry">
       <section className="entry-card entry-wide">
+        <BrandLogo className="entry-logo" />
         <p className="muted num">응시번호 {state.candidateNo}</p>
         <h1 className="entry-title">{state.exam.title}</h1>
         <dl className="facts">
@@ -115,6 +120,7 @@ export function EndedPage({ state }: { state: CandidateStateResponse }): ReactEl
   return (
     <main className="entry">
       <section className="entry-card">
+        <BrandLogo className="entry-logo" />
         <h1 className="entry-title">시험이 끝났습니다</h1>
         <p>{session?.status === 'expired' ? '시험 시간이 끝나 마지막으로 저장한 답안이 최종 제출되었습니다.' : '제출이 완료되었습니다.'}</p>
         {session?.endedAt != null && <p className="muted small">종료 시각 {formatDateTime(session.endedAt)}</p>}

@@ -28,6 +28,8 @@
 
 - 브라우저는 Claude API를 직접 호출하지 않는다. 서버의 스트리밍 엔드포인트만 쓴다.
 - 남은 시간과 남은 토큰은 서버가 준 값을 표시만 한다. 클라이언트에서 계산하지 않는다.
+- 로고는 `src/ui/BrandLogo.tsx`로만 넣는다. 원본은 `src/assets/brand/`(OK금융그룹·OK저축은행 공식 사이트 로고, 2026-10-01 수집)이고, 어두운 바탕에는 `tone="dark"`(CI Black BG 규정 변형)를 쓴다. CI가 정하지 않은 바탕색 위에 로고를 올리지 않는다.
+- 응시자 로그인(`/`)은 메인 화면을 겸한다. 연출은 `candidate/landing-canvas.ts`(로고 파티클·별가루 커서), `candidate/LoginLanding.tsx`(제목 해독, 흐르는 띠), 스타일은 `styles/landing.css`.
 - 색·간격·타이포는 `styles/tokens.css`의 토큰으로만 쓴다. 설계는 `docs/plan/2026-09-27-웹-화면-설계.md`.
 - 개발 서버는 표면마다 따로 띄운다. 수험생은 `npm run dev:web:candidate`(`WEB_DEV_CANDIDATE_API_ORIGIN`), 관리자는 `npm run dev:web:admin`(`WEB_DEV_ADMIN_API_ORIGIN`).
 - 한 표면의 코드가 다른 표면 폴더(`src/candidate`, `src/admin`)를 가져다 쓰지 않는다. 함께 쓰는 것은 `src/ui`, `src/api/http.ts`, `src/styles`에 둔다.
