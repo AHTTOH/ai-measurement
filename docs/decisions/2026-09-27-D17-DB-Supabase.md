@@ -1,7 +1,7 @@
 # 결정 D17: DB는 Supabase(PostgreSQL)
 
-> 결정일: 2026-09-27 · 결정자: 신영환 · 기록: Claude (Opus 5.5 세션)
-> 근거: 2026-09-27 신영환 지시 "db는 supabase 써라". 액세스 토큰은 `.env`의 `SUPABASE_ACCESS_TOKEN`(커밋하지 않음).
+> 결정일: 2026-09-27 · 결정자: 안똔AI · 기록: Claude (Opus 5.5 세션)
+> 근거: 2026-09-27 안똔AI 지시 "db는 supabase 써라". 액세스 토큰은 `.env`의 `SUPABASE_ACCESS_TOKEN`(커밋하지 않음).
 > 바뀌는 결정: D1의 "운영 DB는 별도 PostgreSQL". 개발·테스트용 임베디드 PostgreSQL은 그대로 둔다.
 
 ## 결정

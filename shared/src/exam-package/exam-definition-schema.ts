@@ -23,7 +23,7 @@ export const answerFormatSchema = z.discriminatedUnion('kind', [
   z.strictObject({
     kind: z.literal('multi_choice'),
     options: z.array(z.strictObject({ id: keySchema, label: nonEmptyText })).min(2),
-    /** 선택과 함께 적는 자유 기술 칸(예: 비고). 없으면 칸을 두지 않는다(2026-09-27 신영환 요청) */
+    /** 선택과 함께 적는 자유 기술 칸(예: 비고). 없으면 칸을 두지 않는다(2026-09-27 안똔AI 요청) */
     note: z.strictObject({ label: nonEmptyText }).optional(),
   }),
 ]);

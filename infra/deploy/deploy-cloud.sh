@@ -20,7 +20,7 @@ EXAMS_VOLUME=(--execution-environment=gen2 --add-volume "name=exams,type=cloud-s
 
 # 수험생 서버: 1대 상시(DB 알림 구독·만료 세션 정리), CPU 상시 할당. Supabase 무료 풀러는 계정당 동시 연결 15개라
 # 배포 중 옛 버전과 새 버전이 겹쳐도(각 6+1개) 넘지 않게 1대·6개로 둔다(2026-09-27 배포 중 한도 초과로 확인).
-# 최소 대수는 0이다(요청이 없으면 요금 없음, 2026-09-27 신영환 지시). 시험·시연 때는 예약 작업이나 수동으로 1로 올린다
+# 최소 대수는 0이다(요청이 없으면 요금 없음, 2026-09-27 안똔AI 지시). 시험·시연 때는 예약 작업이나 수동으로 1로 올린다
 gcloud run deploy aim-candidate --project "$PROJECT" --region "$REGION" --image "$IMAGE" \
   --service-account "aim-candidate@${SA_SUFFIX}" --allow-unauthenticated --port 8080 \
   --min-instances 0 --max-instances 1 --no-cpu-throttling --cpu 1 --memory 1Gi --concurrency 250 --timeout 3600 \
